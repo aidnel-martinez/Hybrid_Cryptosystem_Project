@@ -22,7 +22,7 @@ class RotorMachine:
         self.rotate(0)
         return letter
     
-    def encrypt_whole_message(self, message):
+    def encrypt_message(self, message):
         encryption = ""
         for letter in message:
             if (self.abc.find(letter.upper()) == -1):
@@ -31,15 +31,32 @@ class RotorMachine:
                 encryption += self.single_letter_encrypt(letter.upper())
         
         return encryption
+    
+    def single_letter_decrypt(self, letter):
+        for rotor in reversed(self.rotors):
+            letter = self.abc[rotor.find(letter)]
+
+        self.rotate(0)
+        return letter
 
     def decrypt_message(self, message):
-        pass
+        decryption = ""
+        for letter in message:
+            if (self.abc.find(letter.upper()) == -1):
+                pass
+            else: 
+                decryption += self.single_letter_decrypt(letter.upper())
+        
+        return decryption
 
 
 # Run code
 
 message1 = "Hello World"
 rotorMachine = RotorMachine()
-
-print("Encrypted Message: ", rotorMachine.encrypt_whole_message(message1))
-        
+encrypted_msg = rotorMachine.encrypt_message(message1)
+rotorMachine = RotorMachine()
+decrypted_msg = rotorMachine.decrypt_message(encrypted_msg)
+print("Encrypted Message: ", encrypted_msg)
+print("")
+print("Decrypted Message: ", decrypted_msg)
