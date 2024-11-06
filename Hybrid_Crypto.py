@@ -93,3 +93,38 @@ for message in messages:
 # Display results in a table format
 df = pd.DataFrame(results, columns=["Original Information (M)", "E1", "E2 (Hex)", "D1", "D2"])
 print(df)
+
+#Calculating Computational Time
+
+import time
+
+# Sample message
+message = "SAMPLE MESSAGE"
+
+# Measure time for Rotor Machine
+rotorMachine = RotorMachine()
+start_time = time.time()
+encrypted_rotor = rotorMachine.encrypt_message(message)
+decrypted_rotor = rotorMachine.decrypt_message(encrypted_rotor)
+rotor_time = time.time() - start_time
+
+# Measure time for DES
+start_time = time.time()
+encrypted_des = des_encrypt(message, key)
+decrypted_des = des_decrypt(encrypted_des, key)
+des_time = time.time() - start_time
+
+# Measure time for Hybrid Cryptosystem
+rotorMachine = RotorMachine()
+start_time = time.time()
+E1 = rotorMachine.encrypt_message(message)
+E2 = des_encrypt(E1, key)
+D1 = des_decrypt(E2, key)
+rotorMachine = RotorMachine()  # Reset rotor machine for decryption
+D2 = rotorMachine.decrypt_message(D1)
+hybrid_time = time.time() - start_time
+
+
+print(f"Rotor Machine Time: {rotor_time}")
+print(f"DES Time: {des_time}")
+print(f"Hybrid Cryptosystem Time: {hybrid_time}")
